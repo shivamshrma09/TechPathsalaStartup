@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechPathshala Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .card-animate {
+      animation: fadeInUp 0.7s cubic-bezier(.39, .575, .565, 1) both;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 font-sans">
+
+  <!-- Header -->
+  <header class="bg-white shadow p-4 flex justify-between items-center sticky top-0 z-50">
+    <div class="flex items-center gap-3">
+      <img src="https://yt3.googleusercontent.com/-FyQ17JAiIUKnO_KU2rPjQ_lOqm47w0g4hy4uiHPV2RnG76lKofJJFS-9JEjGnr3YOujdp1n8w=s160-c-k-c0x00ffffff-no-rj"
+        alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-blue-600 shadow">
+      <h1 class="text-2xl font-extrabold text-blue-600 tracking-tight">TechPathshala</h1>
+    </div>
+    <div class="flex items-center gap-3">
+      <span id="username" class="text-gray-700 font-semibold text-lg">Hi, Student</span>
+      <button onclick="logout()"
+        class="bg-red-500 text-white px-4 py-1 rounded-lg font-semibold hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 transition">Logout</button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-center py-12 shadow-lg">
+    <h2 class="text-4xl md:text-5xl font-extrabold mb-2 drop-shadow-lg">Welcome to Your Dashboard</h2>
+    <p class="text-lg md:text-xl font-medium">Explore all tools and resources designed for you</p>
+  </section>
+
+  <!-- Utility Bar -->
+  <nav class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap gap-4 justify-center bg-white rounded-xl shadow-md -mt-8 relative z-10">
+    <a href="#" class="flex items-center gap-2 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 px-4 py-2 rounded-full font-semibold transition">📝 Notes</a>
+    <a href="#" class="flex items-center gap-2 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 px-4 py-2 rounded-full font-semibold transition">📄 PYQs</a>
+    <a href="#" class="flex items-center gap-2 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 px-4 py-2 rounded-full font-semibold transition">🧮 CGPA Calc</a>
+    <a href="#" class="flex items-center gap-2 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 px-4 py-2 rounded-full font-semibold transition">🧠 AI Assistant</a>
+    <a href="#" class="flex items-center gap-2 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 px-4 py-2 rounded-full font-semibold transition">📢 Notices</a>
+  </nav>
+
+  <!-- Subject/Semester Filter -->
+  <div class="max-w-7xl mx-auto px-4 py-6">
+    <div class="flex flex-col md:flex-row md:items-center gap-4">
+      <label for="subjectSelect" class="block text-lg font-semibold">🎓 Select Subject / Semester:</label>
+      <select id="subjectSelect" onchange="filterCards()" class="p-2 border rounded-md w-full md:w-1/3">
+        <option value="all">All</option>
+        <option value="maths">Mathematics</option>
+        <option value="physics">Physics</option>
+        <option value="ed">Engineering Drawing</option>
+        <option value="bee">Basic Electrical</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Main Cards Grid -->
+  <main class="max-w-7xl mx-auto px-4 pb-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+
+    <!-- Distraction-Free Study Zone -->
+    <div class="p-6 bg-gradient-to-r from-indigo-50 to-blue-50 border rounded-xl shadow-xl hover:shadow-2xl transition-all col-span-full card-animate">
+      <h3 class="text-2xl font-bold mb-2 text-indigo-700 flex items-center gap-2">🎯 Distraction-Free Study Zone</h3>
+      <p class="text-gray-700 mb-2">Paste YouTube links, open compiler, timer, notepad, Pomodoro tools — all in one!</p>
+      <a href="#" class="inline-block mt-2 text-indigo-700 font-semibold hover:underline">Try it now →</a>
+    </div>
+
+    <!-- Looping Cards -->
+    <script>
+      const resources = [
+        { title: "📘 Notes & Books", desc: "Download PDFs and handwritten notes.", subject: "maths" },
+        { title: "📝 Previous Year Papers", desc: "Get PYQs sorted by subject.", subject: "maths" },
+        { title: "🎥 YouTube Playlists", desc: "Toppers' curated playlists.", subject: "maths" },
+        { title: "🔬 Lab Manuals & Viva", desc: "Viva questions and lab files.", subject: "physics" },
+        { title: "📅 Exam Calendar", desc: "Stay updated with schedules.", subject: "ed" },
+        { title: "⚡ Flashcards", desc: "Quick formulas for revision.", subject: "bee" },
+        { title: "👥 Doubt Forum", desc: "Ask and answer queries.", subject: "maths" },
+        { title: "📤 Share Resources", desc: "Upload your own content.", subject: "maths" },
+        { title: "🎓 Advice from Seniors", desc: "Get roadmap and guidance.", subject: "maths" },
+        { title: "🧮 CGPA Calculator", desc: "Calculate your CGPA easily.", subject: "maths" },
+        { title: "📆 Time Table Generator", desc: "Plan your weekly schedule.", subject: "maths" },
+        { title: "🗺️ Classroom Finder", desc: "Locate rooms easily.", subject: "maths" },
+        { title: "🧠 AI Study Assistant", desc: "Solve doubts and code.", subject: "maths" },
+        { title: "📊 Progress Tracker", desc: "Track your preparation.", subject: "maths" },
+        { title: "🔥 Study Streaks", desc: "Earn badges for consistency.", subject: "maths" },
+        { title: "📢 Noticeboard", desc: "Latest college updates.", subject: "maths" },
+        { title: "📍 Event Tracker", desc: "Track contests and hackathons.", subject: "maths" }
+      ];
+
+      window.addEventListener("DOMContentLoaded", () => {
+        const main = document.querySelector("main");
+        resources.forEach((res) => {
+          const card = document.createElement("div");
+          card.className = `bg-white p-6 rounded-xl shadow hover:shadow-lg transition card-animate card-item`;
+          card.setAttribute("data-subject", res.subject);
+          card.innerHTML = `
+            <h3 class="text-xl font-semibold mb-2">${res.title}</h3>
+            <p class="text-gray-600">${res.desc}</p>
+            <a href="#" class="text-blue-600 mt-4 inline-block hover:underline font-semibold">Explore</a>
+          `;
+          main.appendChild(card);
+        });
+      });
+    </script>
+
+  </main>
+
+  <!-- JS Functions -->
+  <script>
+    // Set username
+    document.getElementById("username").innerText = "Hi, " + (localStorage.getItem("name") || "Student");
+
+    // Logout Function
+    function logout() {
+      localStorage.clear();
+      window.location.href = "teachpath.login.html";
+    }
+
+    // Filter Cards by Subject
+    function filterCards() {
+      const selected = document.getElementById('subjectSelect').value;
+      const cards = document.querySelectorAll('.card-item');
+      cards.forEach(card => {
+        const subject = card.getAttribute('data-subject');
+        card.style.display = (selected === 'all' || selected === subject) ? 'block' : 'none';
+      });
+    }
+  </script>
+
+</body>
+
+</html>
