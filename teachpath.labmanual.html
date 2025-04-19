@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lab Manuals | TechPathshala</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-white shadow p-4 flex justify-between items-center">
+    <div class="flex items-center gap-3">
+      <a href="dashboard.html" class="text-blue-600 font-bold text-lg hover:underline flex items-center gap-1">
+        ← Dashboard
+      </a>
+      <span class="text-gray-400">|</span>
+      <span class="text-xl font-bold text-blue-600">Lab Manuals</span>
+    </div>
+    <div>
+      <span id="username" class="text-gray-700 mr-4">Hi, Student</span>
+      <button onclick="logout()" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Logout</button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-center py-10 shadow">
+    <h2 class="text-3xl font-bold mb-2">🧪 Lab Manuals</h2>
+    <p class="text-lg">Select your year and semester to view lab manuals with viva questions.</p>
+  </section>
+
+  <!-- Year & Semester Selection -->
+  <section class="max-w-4xl mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <label for="yearSelect" class="block text-lg font-medium text-gray-700 mb-1">Select Year:</label>
+      <select id="yearSelect" class="w-full p-2 border rounded text-gray-700">
+        <option value="">-- Choose Year --</option>
+        <option value="1st">1st Year</option>
+        <option value="2nd">2nd Year</option>
+        <option value="3rd">3rd Year</option>
+        <option value="4th">4th Year</option>
+      </select>
+    </div>
+    <div>
+      <label for="semSelect" class="block text-lg font-medium text-gray-700 mb-1">Select Semester:</label>
+      <select id="semSelect" class="w-full p-2 border rounded text-gray-700">
+        <option value="">-- Choose Semester --</option>
+        <option value="1">Semester 1</option>
+        <option value="2">Semester 2</option>
+        <option value="3">Semester 3</option>
+        <option value="4">Semester 4</option>
+        <option value="5">Semester 5</option>
+        <option value="6">Semester 6</option>
+        <option value="7">Semester 7</option>
+        <option value="8">Semester 8</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- Lab Manuals List -->
+  <main class="max-w-4xl mx-auto px-4 pb-12">
+    <div id="labManuals" class="grid md:grid-cols-2 gap-6"></div>
+  </main>
+
+  <script>
+    const manuals = {
+      "1st-1": [
+        { title: "Physics Lab Manual", desc: "Experiments with diagrams & viva questions", link: "#" }
+      ],
+      "1st-2": [
+        { title: "Chemistry Lab Manual", desc: "Detailed procedure & safety measures", link: "#" }
+      ],
+      "2nd-3": [
+        { title: "C++ Programming Lab", desc: "Code + flowcharts + viva prep", link: "#" }
+      ],
+      "2nd-4": [
+        { title: "Electronics Lab Manual", desc: "All circuits with waveform analysis", link: "#" }
+      ],
+      "3rd-5": [
+        { title: "Microprocessor Lab", desc: "Assembly language, kits and outputs", link: "#" }
+      ],
+      "3rd-6": [
+        { title: "Digital Systems Lab", desc: "Boolean logic, truth tables, ICs", link: "#" }
+      ],
+      "4th-7": [
+        { title: "Embedded Systems Lab", desc: "IoT, Arduino, and interfacing manuals", link: "#" }
+      ],
+      "4th-8": [
+        { title: "Project Lab", desc: "Final year project guidance + formats", link: "#" }
+      ]
+    };
+
+    const yearSelect = document.getElementById("yearSelect");
+    const semSelect = document.getElementById("semSelect");
+    const labManualsDiv = document.getElementById("labManuals");
+
+    function showManuals() {
+      const year = yearSelect.value;
+      const sem = semSelect.value;
+      labManualsDiv.innerHTML = "";
+
+      const key = `${year}-${sem}`;
+      if (manuals[key]) {
+        manuals[key].forEach(item => {
+          labManualsDiv.innerHTML += `
+            <div class="bg-white rounded-xl shadow p-5 flex flex-col">
+              <h3 class="text-lg font-semibold text-blue-700 mb-2">${item.title}</h3>
+              <p class="text-gray-600 mb-3">${item.desc}</p>
+              <a href="${item.link}" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition w-max">Download</a>
+            </div>
+          `;
+        });
+      } else {
+        labManualsDiv.innerHTML = `<p class="text-gray-600 col-span-2">No lab manuals found for selected year and semester.</p>`;
+      }
+    }
+
+    yearSelect.addEventListener("change", showManuals);
+    semSelect.addEventListener("change", showManuals);
+
+    document.getElementById("username").innerText = "Hi, " + (localStorage.getItem("name") || "Student");
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "teachpath.login.html";
+    }
+  </script>
+</body>
+</html>

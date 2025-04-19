@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Time Table Generator | TechPathshala</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <style>
+    td, th {
+      border: 1px solid #ccc;
+      text-align: center;
+      padding: 8px;
+    }
+    select {
+      width: 100%;
+      padding: 4px;
+    }
+    .color-box {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-right: 5px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 transition-all">
+
+  <div class="max-w-5xl mx-auto py-10 px-4">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-blue-600 dark:text-blue-400">🗓️ Time Table Generator</h1>
+      <button onclick="toggleDark()" class="text-sm px-3 py-1 border rounded">🌓 Dark Mode</button>
+    </div>
+
+    <!-- Subject Input -->
+    <div class="mb-6">
+      <label class="block font-medium mb-1">Subjects (comma separated):</label>
+      <input id="subjects" class="w-full p-2 border rounded" placeholder="e.g. Maths, Physics, EC, Mechanics">
+    </div>
+
+    <!-- Actions -->
+    <div class="flex gap-3 mb-4 flex-wrap">
+      <button onclick="createTimetable()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">📄 Generate</button>
+      <button onclick="randomFill()" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">✨ Auto Fill</button>
+      <button onclick="saveTimetable()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">💾 Save</button>
+      <button onclick="resetTimetable()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">♻️ Reset</button>
+      <button onclick="exportImage()" class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-black">📷 Export</button>
+    </div>
+
+    <!-- Timetable Table -->
+    <div id="timetableArea" class="overflow-x-auto bg-white dark:bg-gray-800 shadow rounded-lg p-4">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-gray-200 dark:bg-gray-700">
+            <th>Day / Time</th>
+            <th>9-10</th><th>10-11</th><th>11-12</th><th>12-1</th><th>2-3</th><th>3-4</th>
+          </tr>
+        </thead>
+        <tbody id="timetableBody"></tbody>
+      </table>
+    </div>
+
+    <!-- Saved confirmation -->
+    <p id="msg" class="mt-4 text-green-600 font-medium hidden">✅ Timetable saved locally!</p>
+  </div>
+
+  <script>
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const periods = ['9-10', '10-11', '11-12', '12-1', '2-3', '3-4'];
+    let subjectsList = [];
+
+    function getColor(subject) {
+      const colors = ['#f87171', '#60a5fa', '#34d399', '#fbbf24', '#a78bfa', '#f472b6', '#38bdf8'];
+      const index = subjectsList.indexOf(subject);
+      return colors[index % colors.length];
+    }
+
+    function createTimetable() {
+      const tbody = document.getElementById('timetableBody');
+      const input = document.getElementById('subjects').value;
+      subjectsList = input.split(',').map(s => s.trim()).filter(Boolean);
+      tbody.innerHTML = '';
+      days.forEach(day => {
+        const row = document.createElement('tr');
+        const dayCell = document.createElement('td');
+        dayCell.textContent = day;
+        row.appendChild(dayCell);
+        periods.forEach(() => {
+          const cell = document.createElement('td');
+          const select = document.createElement('select');
+          select.innerHTML = `<option value="">--</option>`;
+          subjectsList.forEach(sub => {
+            select.innerHTML += `<option value="${sub}">${sub}</option>`;
+          });
+          select.onchange = () => {
+            select.style.backgroundColor = getColor(select.value) || '';
+          };
+          cell.appendChild(select);
+          row.appendChild(cell);
+        });
+        tbody.appendChild(row);
+      });
+    }
+
+    function randomFill() {
+      const selects = document.querySelectorAll('tbody select');
+      selects.forEach(sel => {
+        const sub = subjectsList[Math.floor(Math.random() * subjectsList.length)];
+        sel.value = sub;
+        sel.style.backgroundColor = getColor(sub);
+      });
+    }
+
+    function saveTimetable() {
+      const selects = document.querySelectorAll('tbody select');
+      const data = Array.from(selects).map(s => s.value);
+      localStorage.setItem('techpath_tt', JSON.stringify(data));
+      document.getElementById('msg').classList.remove('hidden');
+      setTimeout(() => document.getElementById('msg').classList.add('hidden'), 3000);
+    }
+
+    function resetTimetable() {
+      if (confirm("Reset your timetable?")) {
+        localStorage.removeItem('techpath_tt');
+        createTimetable();
+      }
+    }
+
+    function exportImage() {
+      html2canvas(document.getElementById('timetableArea')).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'TechPathshala_Timetable.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+    }
+
+    window.onload = () => {
+      const saved = localStorage.getItem('techpath_tt');
+      const input = document.getElementById('subjects');
+      input.value = "Maths, Physics, EC, Mechanics";
+      subjectsList = input.value.split(',').map(s => s.trim());
+      createTimetable();
+      if (saved) {
+        const selects = document.querySelectorAll('tbody select');
+        JSON.parse(saved).forEach((val, i) => {
+          selects[i].value = val;
+          selects[i].style.backgroundColor = getColor(val);
+        });
+      }
+    };
+  </script>
+</body>
+</html>

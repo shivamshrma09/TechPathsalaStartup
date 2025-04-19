@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TeachPath | AI Syllabus Tracker Enhanced</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1e3a8a;
+      --accent: #22c55e;
+      --bg: #f0f4f8;
+      --card-bg: #fff;
+      --text: #222;
+      --subtle: #e5e7eb;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      transition: background 0.3s, color 0.3s;
+    }
+    header {
+      background: var(--primary-dark);
+      color: white;
+      padding: 24px 10px 20px 10px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      border-bottom-left-radius: 18px;
+      border-bottom-right-radius: 18px;
+      box-shadow: 0 4px 20px rgba(30,58,138,0.08);
+      position: relative;
+    }
+    .dark-mode {
+      --primary: #60a5fa;
+      --primary-dark: #0f172a;
+      --accent: #4ade80;
+      --bg: #18181b;
+      --card-bg: #23232b;
+      --text: #f3f4f6;
+      --subtle: #27272a;
+    }
+    .dark-mode header {
+      color: #e0e7ef;
+    }
+    .container {
+      max-width: 900px;
+      margin: 32px auto;
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 36px 40px 32px 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+      transition: background 0.3s;
+    }
+    textarea {
+      width: 100%;
+      height: 220px;
+      padding: 14px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      border: 1px solid var(--subtle);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+    }
+    select, input[type="text"] {
+      padding: 8px;
+      font-size: 15px;
+      width: 200px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid var(--subtle);
+      margin-right: 10px;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+    }
+    button {
+      padding: 12px 26px;
+      background-color: var(--primary);
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+      margin-bottom: 25px;
+      font-size: 16px;
+      margin-right: 10px;
+      box-shadow: 0 4px 8px rgba(37,99,235,0.18);
+    }
+    button:hover {
+      background-color: var(--primary-dark);
+      box-shadow: 0 6px 14px rgba(37,99,235,0.28);
+      transform: translateY(-2px) scale(1.04);
+    }
+    .topic-section {
+      background: var(--bg);
+      padding: 18px 20px;
+      margin-bottom: 24px;
+      border-left: 5px solid var(--primary);
+      border-radius: 14px;
+      box-shadow: 0 2px 12px rgba(37,99,235,0.07);
+      transition: background 0.3s, box-shadow 0.3s;
+      animation: fadeInCard 0.7s;
+    }
+    @keyframes fadeInCard {
+      from { opacity: 0; transform: translateY(30px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .topic-section:hover {
+      box-shadow: 0 6px 24px rgba(37,99,235,0.17);
+      background: var(--card-bg);
+    }
+    .chapter-label {
+      font-weight: 600;
+      font-size: 19px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 8px;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.2s;
+    }
+    .chapter-label:hover {
+      color: var(--primary);
+    }
+    .subtopic {
+      margin-left: 32px;
+      font-size: 15px;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.2s;
+    }
+    .subtopic:hover {
+      color: var(--primary);
+    }
+    input[type="checkbox"] {
+      margin-right: 8px;
+      transform: scale(1.13);
+      accent-color: var(--primary);
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+    }
+    input[type="checkbox"]:checked {
+      transform: scale(1.28) rotate(-8deg);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    input[type="checkbox"]:hover {
+      transform: scale(1.19);
+      transition: transform 0.2s cubic-bezier(0.4,0,0.2,1);
+    }
+    .progress-bar {
+      height: 22px;
+      background: var(--subtle);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 10px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(34,197,94,0.07);
+      position: relative;
+      border: 1px solid var(--primary);
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent) 80%, #bbf7d0 100%);
+      width: 0%;
+      transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 8px var(--accent);
+      border-radius: 12px 0 0 12px;
+    }
+    .progress-text {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      top: 0;
+      left: 0;
+      font-size: 15px;
+      font-weight: 600;
+      color: #222;
+      line-height: 22px;
+      z-index: 2;
+      pointer-events: none;
+      letter-spacing: 0.5px;
+      user-select: none;
+      text-shadow: 0 1px 4px #fff9;
+    }
+    .dark-mode .progress-text {
+      color: #f3f4f6;
+      text-shadow: 0 1px 4px #1119;
+    }
+    .toggle-dark {
+      position: absolute;
+      right: 30px;
+      top: 18px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 22px;
+      cursor: pointer;
+      transition: color 0.2s;
+      outline: none;
+    }
+    .toggle-dark:hover {
+      color: #facc15;
+    }
+    /* Celebration animation */
+    .celebration {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(90deg, #22c55e 80%, #bbf7d0 100%);
+      color: #fff;
+      font-size: 2.1rem;
+      font-weight: bold;
+      padding: 28px 48px;
+      border-radius: 20px;
+      z-index: 9999;
+      box-shadow: 0 8px 32px rgba(34,197,94,0.18);
+      animation: popUp 1s cubic-bezier(.18,.89,.32,1.28);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border: 3px solid #fff;
+      text-shadow: 0 2px 8px #1117;
+    }
+    @keyframes popUp {
+      0% { transform: translate(-50%, -60%) scale(0.7);}
+      80% { transform: translate(-50%, -50%) scale(1.08);}
+      100% { transform: translate(-50%, -50%) scale(1);}
+    }
+    /* Confetti */
+    .confetti {
+      position: fixed;
+      pointer-events: none;
+      z-index: 99999;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      overflow: hidden;
+    }
+    .confetti-piece {
+      position: absolute;
+      width: 10px; height: 18px;
+      border-radius: 3px;
+      opacity: 0.8;
+      animation: confetti-fall 1.7s linear forwards;
+    }
+    @keyframes confetti-fall {
+      to {
+        transform: translateY(100vh) rotateZ(360deg);
+        opacity: 0.3;
+      }
+    }
+    /* Responsive */
+    @media (max-width: 600px) {
+      .container { padding: 18px 8px; }
+      header { font-size: 21px; padding: 18px 2px 14px 2px; }
+      .toggle-dark { right: 12px; top: 11px; font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  📚 TeachPath AI Syllabus Tracker
+  <button class="toggle-dark" onclick="toggleDarkMode()" title="Toggle dark mode" id="darkModeBtn">🌙</button>
+</header>
+
+<div class="container">
+  <textarea id="syllabusInput" placeholder="Paste your syllabus here..."></textarea>
+
+  <label><strong>🎯 Studying For:</strong></label>
+  <select id="purposeSelect">
+    <option value="end">End Semester</option>
+    <option value="mid">Mid Semester</option>
+  </select>
+
+  <label><strong>📌 Units:</strong></label>
+  <input type="text" id="unitSelector" placeholder="e.g., 1, 3, 5">
+
+  <button onclick="generateChecklist()">Generate Checklist</button>
+
+  <div class="progress-bar" style="position: relative;">
+    <div class="progress-fill" id="progressBar"></div>
+    <span class="progress-text" id="progressText">0% (0/0)</span>
+  </div>
+
+  <div id="outputArea"></div>
+</div>
+
+<script>
+  let total = 0, checked = 0, chapters = [];
+
+  function generateChecklist() {
+    const input = document.getElementById('syllabusInput').value.trim();
+    const selectedUnits = document.getElementById('unitSelector').value.trim().split(',').map(u => u.trim()).filter(Boolean);
+    const output = document.getElementById('outputArea');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    output.innerHTML = '';
+    progressBar.style.width = '0%';
+    progressText.innerText = '0% (0/0)';
+    total = 0;
+    checked = 0;
+    chapters = [];
+
+    if (!input) {
+      alert("Please paste some syllabus.");
+      return;
+    }
+
+    const lines = input.split(/\n+/);
+    const unitRegex = /(unit|chapter|topic)\s*(\d+)[:\-]?\s*/i;
+
+    let currentChapter = null;
+
+    lines.forEach((line) => {
+      line = line.trim();
+      if (!line) return;
+
+      const match = unitRegex.exec(line);
+      if (match) {
+        const unitNumber = match[2];
+        if (selectedUnits.length && !selectedUnits.includes(unitNumber)) {
+          currentChapter = null;
+          return;
+        }
+
+        const parts = line.split(/[:\-]/);
+        const title = parts[0].trim();
+        const topicsPart = parts.slice(1).join('-').trim();
+
+        if (currentChapter) chapters.push(currentChapter);
+        currentChapter = { title: line, topics: [], unit: unitNumber };
+
+        if (topicsPart) {
+          const topics = topicsPart.split(/[,;\-]/).map(t => t.trim()).filter(Boolean);
+          currentChapter.topics.push(...topics);
+        }
+      } else if (currentChapter) {
+        const topics = line.split(/[,;\-]/).map(t => t.trim()).filter(Boolean);
+        currentChapter.topics.push(...topics);
+      }
+    });
+
+    if (currentChapter) chapters.push(currentChapter);
+
+    chapters.forEach((chapter, index) => {
+      const section = document.createElement('div');
+      section.className = 'topic-section';
+      const chapterId = `chapter-${index}`;
+
+      const chapterLabel = document.createElement('label');
+      chapterLabel.className = 'chapter-label';
+      const chapterCheckbox = document.createElement('input');
+      chapterCheckbox.type = 'checkbox';
+      chapterCheckbox.id = chapterId;
+
+      chapterCheckbox.onclick = () => {
+        chapter.topics.forEach((_, i) => {
+          const subBox = document.getElementById(`${chapterId}-sub-${i}`);
+          if (subBox) subBox.checked = chapterCheckbox.checked;
+        });
+        updateProgress();
+      };
+
+      chapterLabel.appendChild(chapterCheckbox);
+      chapterLabel.appendChild(document.createTextNode(chapter.title));
+      section.appendChild(chapterLabel);
+
+      chapter.topics.forEach((topic, i) => {
+        total++;
+        const subLabel = document.createElement('label');
+        subLabel.className = 'subtopic';
+
+        const subCheckbox = document.createElement('input');
+        subCheckbox.type = 'checkbox';
+        subCheckbox.id = `${chapterId}-sub-${i}`;
+        subCheckbox.onclick = () => {
+          const allChecked = chapter.topics.every((_, j) =>
+            document.getElementById(`${chapterId}-sub-${j}`).checked
+          );
+          document.getElementById(chapterId).checked = allChecked;
+          updateProgress();
+        };
+
+        subLabel.appendChild(subCheckbox);
+        subLabel.appendChild(document.createTextNode(topic));
+        section.appendChild(subLabel);
+      });
+
+      output.appendChild(section);
+    });
+
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    checked = 0;
+    const all = document.querySelectorAll('input[type="checkbox"]:not([id^=chapter])');
+    all.forEach(cb => cb.checked && checked++);
+    const percent = total > 0 ? Math.round((checked / total) * 100) : 0;
+    progressBar.style.width = `${percent}%`;
+    progressText.innerText = `${percent}% (${checked}/${total})`;
+
+    // Celebration animation if all topics checked
+    if (total > 0 && checked === total && !document.getElementById('celebrationBox')) {
+      showCelebration();
+      showConfetti();
+    }
+  }
+
+  function showCelebration() {
+    const box = document.createElement('div');
+    box.className = 'celebration';
+    box.id = 'celebrationBox';
+    box.innerHTML = '🎉 Congratulations!<br>All topics completed!';
+    document.body.appendChild(box);
+    setTimeout(() => {
+      if (box) box.remove();
+      const confetti = document.getElementById('confettiBox');
+      if (confetti) confetti.remove();
+    }, 2600);
+  }
+
+  // Confetti animation
+  function showConfetti() {
+    const confettiBox = document.createElement('div');
+    confettiBox.className = 'confetti';
+    confettiBox.id = 'confettiBox';
+    for (let i = 0; i < 38; i++) {
+      const conf = document.createElement('div');
+      conf.className = 'confetti-piece';
+      conf.style.left = Math.random() * 100 + 'vw';
+      conf.style.background = `hsl(${Math.random()*360}, 80%, 60%)`;
+      conf.style.animationDelay = (Math.random() * 0.7) + 's';
+      confettiBox.appendChild(conf);
+    }
+    document.body.appendChild(confettiBox);
+    setTimeout(() => { confettiBox.remove(); }, 2000);
+  }
+
+  // Dark mode toggle
+  function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    const btn = document.getElementById('darkModeBtn');
+    btn.innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    // Save preference
+    if (window.localStorage) {
+      localStorage.setItem('teachpath-dark', document.body.classList.contains('dark-mode') ? '1' : '0');
+    }
+  }
+  // On load, check dark mode preference
+  window.onload = function() {
+    if (window.localStorage && localStorage.getItem('teachpath-dark') === '1') {
+      document.body.classList.add('dark-mode');
+      document.getElementById('darkModeBtn').innerText = '☀️';
+    }
+  }
+</script>
+
+</body>
+</html>

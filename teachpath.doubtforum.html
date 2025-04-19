@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Doubt Forum | TechPathshala</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-white shadow p-4 flex justify-between items-center">
+    <div class="flex items-center gap-3">
+      <a href="dashboard.html" class="text-blue-600 font-bold text-lg hover:underline flex items-center gap-1">
+        ← Dashboard
+      </a>
+      <span class="text-gray-400">|</span>
+      <span class="text-xl font-bold text-purple-700">Doubt Forum</span>
+    </div>
+    <div>
+      <span id="username" class="text-gray-700 mr-4">Hi, Student</span>
+      <button onclick="logout()" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Logout</button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-10 text-center shadow">
+    <h2 class="text-3xl font-bold mb-2">💬 Doubt Forum</h2>
+    <p class="text-lg">Post your doubts and help others by replying</p>
+  </section>
+
+  <!-- Doubt Form -->
+  <div class="max-w-3xl mx-auto px-4 mt-8">
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h3 class="text-xl font-bold mb-4 text-gray-700">🙋 Ask a Doubt</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <select id="year" class="border p-2 rounded">
+          <option value="">Select Year</option>
+          <option>1st Year</option>
+          <option>2nd Year</option>
+          <option>3rd Year</option>
+          <option>4th Year</option>
+        </select>
+        <select id="semester" class="border p-2 rounded">
+          <option value="">Select Semester</option>
+          <option>Semester 1</option>
+          <option>Semester 2</option>
+          <option>Semester 3</option>
+          <option>Semester 4</option>
+          <option>Semester 5</option>
+          <option>Semester 6</option>
+          <option>Semester 7</option>
+          <option>Semester 8</option>
+        </select>
+      </div>
+      <input id="doubtTitle" type="text" placeholder="Enter doubt title..." class="w-full border p-2 rounded mb-3"/>
+      <textarea id="doubtDesc" rows="3" placeholder="Explain your doubt..." class="w-full border p-2 rounded mb-4"></textarea>
+      <button onclick="submitDoubt()" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">Post Doubt</button>
+    </div>
+  </div>
+
+  <!-- Doubts List -->
+  <div class="max-w-3xl mx-auto px-4 mt-10">
+    <h3 class="text-xl font-bold text-gray-700 mb-4">📚 Recent Doubts</h3>
+    <div id="doubtList" class="flex flex-col gap-4">
+      <!-- Doubts will be injected here -->
+    </div>
+  </div>
+
+  <script>
+    const doubts = [];
+
+    document.getElementById("username").innerText =
+      "Hi, " + (localStorage.getItem("name") || "Student");
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "teachpath.login.html";
+    }
+
+    function submitDoubt() {
+      const year = document.getElementById("year").value;
+      const sem = document.getElementById("semester").value;
+      const title = document.getElementById("doubtTitle").value;
+      const desc = document.getElementById("doubtDesc").value;
+
+      if (!year || !sem || !title || !desc) {
+        alert("Please fill all the fields.");
+        return;
+      }
+
+      const doubtObj = {
+        id: Date.now(),
+        title,
+        desc,
+        year,
+        sem,
+        replies: [],
+      };
+
+      doubts.unshift(doubtObj); // Newest on top
+      renderDoubts();
+
+      // Clear form
+      document.getElementById("doubtTitle").value = "";
+      document.getElementById("doubtDesc").value = "";
+      document.getElementById("year").value = "";
+      document.getElementById("semester").value = "";
+    }
+
+    function renderDoubts() {
+      const list = document.getElementById("doubtList");
+      list.innerHTML = "";
+
+      doubts.forEach((doubt) => {
+        const repliesHtml = doubt.replies.map(
+          (reply) =>
+            `<div class="ml-4 mt-2 text-sm text-gray-700 bg-gray-100 p-2 rounded">${reply}</div>`
+        ).join("");
+
+        const doubtHTML = `
+          <div class="bg-white p-4 shadow rounded">
+            <h4 class="font-semibold text-purple-700">${doubt.title}</h4>
+            <p class="text-gray-600 text-sm">Asked by: Anonymous | ${doubt.sem}, ${doubt.year}</p>
+            <p class="text-gray-500 text-sm mt-1">${doubt.desc}</p>
+
+            <div class="mt-4">
+              <input type="text" id="reply-${doubt.id}" placeholder="Write a reply..." class="w-full border p-2 rounded mb-2"/>
+              <button onclick="addReply(${doubt.id})" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">Reply</button>
+            </div>
+            <div class="mt-3">
+              ${repliesHtml}
+            </div>
+          </div>
+        `;
+        list.innerHTML += doubtHTML;
+      });
+    }
+
+    function addReply(id) {
+      const input = document.getElementById(`reply-${id}`);
+      const replyText = input.value.trim();
+      if (!replyText) return;
+
+      const doubt = doubts.find((d) => d.id === id);
+      doubt.replies.push(replyText);
+
+      renderDoubts(); // Re-render to update replies
+    }
+  </script>
+
+</body>
+</html>

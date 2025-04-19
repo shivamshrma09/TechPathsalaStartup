@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coding Roadmaps | TechPathshala</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <style>
+    .step-done {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+    .roadmap-section {
+      display: none;
+    }
+    .roadmap-section.active {
+      display: block;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 p-6">
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-4xl font-bold text-blue-700 text-center mb-6">🚀 Coding Roadmaps</h1>
+    
+    <!-- Tabs -->
+    <div class="flex flex-wrap justify-center gap-2 mb-6">
+      <button onclick="showRoadmap('dsa')" class="tab-btn bg-blue-600 text-white px-4 py-2 rounded">DSA</button>
+      <button onclick="showRoadmap('web')" class="tab-btn bg-blue-600 text-white px-4 py-2 rounded">Web Dev</button>
+      <button onclick="showRoadmap('ml')" class="tab-btn bg-blue-600 text-white px-4 py-2 rounded">ML</button>
+      <button onclick="showRoadmap('app')" class="tab-btn bg-blue-600 text-white px-4 py-2 rounded">App Dev</button>
+      <button onclick="showRoadmap('cp')" class="tab-btn bg-blue-600 text-white px-4 py-2 rounded">CP</button>
+    </div>
+
+    <!-- Roadmap Containers -->
+    <div id="roadmap-container">
+      <!-- Template used for all roadmaps -->
+      <div id="dsa" class="roadmap-section active bg-white p-6 rounded shadow">
+        <h2 class="text-2xl font-semibold mb-4">📘 DSA (Data Structures & Algorithms)</h2>
+        <progress id="progress-dsa" max="7" value="0" class="w-full mb-4 h-4"></progress>
+        <ul id="steps-dsa" class="space-y-2">
+          <li><input type="checkbox" onchange="updateProgress('dsa')"> Learn language basics</li>
+          <li><input type="checkbox" onchange="updateProgress('dsa')"> Time/Space Complexity</li>
+          <li><input type="checkbox" onchange="updateProgress('dsa')"> Arrays, Strings</li>
+          <li><input type="checkbox" onchange="updateProgress('dsa')"> Stack, Queue, Linked List</li>
+          <li><input type="checkbox" onchange="updateProgress('dsa')"> Recursion + Backtracking</li>
+          <li><input type="checkbox" onchange="updateProgress('dsa')"> Trees, Graphs, DP</li>
+          <li><input type="checkbox" onchange="updateProgress('dsa')"> 150+ LeetCode Qs</li>
+        </ul>
+      </div>
+
+      <!-- Web Dev -->
+      <div id="web" class="roadmap-section bg-white p-6 rounded shadow">
+        <h2 class="text-2xl font-semibold mb-4">🌐 Web Development</h2>
+        <progress id="progress-web" max="7" value="0" class="w-full mb-4 h-4"></progress>
+        <ul id="steps-web" class="space-y-2">
+          <li><input type="checkbox" onchange="updateProgress('web')"> HTML, CSS, JS</li>
+          <li><input type="checkbox" onchange="updateProgress('web')"> Mini Projects</li>
+          <li><input type="checkbox" onchange="updateProgress('web')"> Git + GitHub</li>
+          <li><input type="checkbox" onchange="updateProgress('web')"> React / Tailwind</li>
+          <li><input type="checkbox" onchange="updateProgress('web')"> Backend: Node.js + DB</li>
+          <li><input type="checkbox" onchange="updateProgress('web')"> Auth + API</li>
+          <li><input type="checkbox" onchange="updateProgress('web')"> Deploy Projects</li>
+        </ul>
+      </div>
+
+      <!-- ML -->
+      <div id="ml" class="roadmap-section bg-white p-6 rounded shadow">
+        <h2 class="text-2xl font-semibold mb-4">🧠 Machine Learning</h2>
+        <progress id="progress-ml" max="7" value="0" class="w-full mb-4 h-4"></progress>
+        <ul id="steps-ml" class="space-y-2">
+          <li><input type="checkbox" onchange="updateProgress('ml')"> Python + Numpy, Pandas</li>
+          <li><input type="checkbox" onchange="updateProgress('ml')"> Stats + Math Basics</li>
+          <li><input type="checkbox" onchange="updateProgress('ml')"> Regression + Classification</li>
+          <li><input type="checkbox" onchange="updateProgress('ml')"> Unsupervised Learning</li>
+          <li><input type="checkbox" onchange="updateProgress('ml')"> Neural Nets (Keras)</li>
+          <li><input type="checkbox" onchange="updateProgress('ml')"> Projects</li>
+          <li><input type="checkbox" onchange="updateProgress('ml')"> Deployment</li>
+        </ul>
+      </div>
+
+      <!-- App Dev -->
+      <div id="app" class="roadmap-section bg-white p-6 rounded shadow">
+        <h2 class="text-2xl font-semibold mb-4">📱 App Development</h2>
+        <progress id="progress-app" max="7" value="0" class="w-full mb-4 h-4"></progress>
+        <ul id="steps-app" class="space-y-2">
+          <li><input type="checkbox" onchange="updateProgress('app')"> Dart / Java / Kotlin</li>
+          <li><input type="checkbox" onchange="updateProgress('app')"> Setup SDK + IDE</li>
+          <li><input type="checkbox" onchange="updateProgress('app')"> UI + Navigation</li>
+          <li><input type="checkbox" onchange="updateProgress('app')"> APIs + State Mgmt</li>
+          <li><input type="checkbox" onchange="updateProgress('app')"> Firebase / Storage</li>
+          <li><input type="checkbox" onchange="updateProgress('app')"> Notifications</li>
+          <li><input type="checkbox" onchange="updateProgress('app')"> Publish App</li>
+        </ul>
+      </div>
+
+      <!-- CP -->
+      <div id="cp" class="roadmap-section bg-white p-6 rounded shadow">
+        <h2 class="text-2xl font-semibold mb-4">⚔️ Competitive Programming</h2>
+        <progress id="progress-cp" max="7" value="0" class="w-full mb-4 h-4"></progress>
+        <ul id="steps-cp" class="space-y-2">
+          <li><input type="checkbox" onchange="updateProgress('cp')"> Learn STL / Java Coll.</li>
+          <li><input type="checkbox" onchange="updateProgress('cp')"> Number Theory</li>
+          <li><input type="checkbox" onchange="updateProgress('cp')"> Recursion, Bits</li>
+          <li><input type="checkbox" onchange="updateProgress('cp')"> DP + Graphs</li>
+          <li><input type="checkbox" onchange="updateProgress('cp')"> Trees (Fenwick etc.)</li>
+          <li><input type="checkbox" onchange="updateProgress('cp')"> Upsolve Contests</li>
+          <li><input type="checkbox" onchange="updateProgress('cp')"> Weekly CF/CC</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tabs = ['dsa', 'web', 'ml', 'app', 'cp'];
+
+    function showRoadmap(id) {
+      tabs.forEach(tab => {
+        document.getElementById(tab).classList.remove("active");
+      });
+      document.getElementById(id).classList.add("active");
+    }
+
+    function updateProgress(track) {
+      const checkboxes = document.querySelectorAll(`#steps-${track} input[type='checkbox']`);
+      let count = 0;
+      checkboxes.forEach((cb, i) => {
+        if (cb.checked) {
+          cb.parentElement.classList.add("step-done");
+          count++;
+        } else {
+          cb.parentElement.classList.remove("step-done");
+        }
+      });
+      document.getElementById(`progress-${track}`).value = count;
+      localStorage.setItem(`progress-${track}`, JSON.stringify(Array.from(checkboxes).map(cb => cb.checked)));
+    }
+
+    function loadProgress() {
+      tabs.forEach(track => {
+        const data = localStorage.getItem(`progress-${track}`);
+        if (data) {
+          const states = JSON.parse(data);
+          const checkboxes = document.querySelectorAll(`#steps-${track} input[type='checkbox']`);
+          checkboxes.forEach((cb, i) => {
+            cb.checked = states[i];
+          });
+          updateProgress(track);
+        }
+      });
+    }
+
+    window.onload = loadProgress;
+  </script>
+</body>
+</html>

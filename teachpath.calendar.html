@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Exam & Assignment Calendar | TechPathshala</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .event-type-Exam { background-color: #dbeafe; color: #1e40af; }
+    .event-type-Assignment { background-color: #fef9c3; color: #b45309; }
+    .event-type-Test { background-color: #fce7f3; color: #be185d; }
+    .event-type-Hackathon { background-color: #e0f2fe; color: #0369a1; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-gray-100 to-indigo-50 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-white shadow p-4 flex justify-between items-center sticky top-0 z-20">
+    <h1 class="text-2xl md:text-3xl font-extrabold text-purple-700 flex items-center gap-2">
+      📅 Exam & Assignment Calendar
+    </h1>
+    <a href="teachpath.dashboard.html" class="text-blue-600 hover:underline font-semibold text-lg">← Back to Dashboard</a>
+  </header>
+
+  <!-- Add Event Form -->
+  <section class="max-w-4xl mx-auto mt-10 px-4">
+    <div class="bg-white p-8 rounded-2xl shadow-lg space-y-6">
+      <h2 class="text-2xl font-bold text-gray-800 flex items-center gap-2">➕ Add Event</h2>
+      <div class="grid md:grid-cols-4 gap-4">
+        <input id="eventTitle" type="text" placeholder="Event Title (e.g. Math Assignment)" class="border border-indigo-200 p-3 rounded-lg w-full focus:ring-2 focus:ring-indigo-400 focus:outline-none" />
+        <input id="eventDate" type="date" class="border border-indigo-200 p-3 rounded-lg w-full focus:ring-2 focus:ring-indigo-400 focus:outline-none" />
+        <select id="eventType" class="border border-indigo-200 p-3 rounded-lg w-full focus:ring-2 focus:ring-indigo-400 focus:outline-none">
+          <option value="">Select Type</option>
+          <option value="Exam">📘 Exam</option>
+          <option value="Assignment">📝 Assignment</option>
+          <option value="Test">🧪 Test</option>
+          <option value="Hackathon">🚀 Hackathon</option>
+        </select>
+        <button onclick="addEvent()" class="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition">Add Event</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter -->
+  <section class="max-w-4xl mx-auto mt-8 px-4">
+    <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-4">
+      <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">📍 Upcoming Events</h3>
+      <select id="filterType" onchange="renderEvents()" class="border border-indigo-200 p-2 rounded-lg">
+        <option value="">All</option>
+        <option value="Exam">📘 Exams Only</option>
+        <option value="Assignment">📝 Assignments Only</option>
+        <option value="Test">🧪 Tests Only</option>
+        <option value="Hackathon">🚀 Hackathons Only</option>
+      </select>
+    </div>
+
+    <ul id="eventList" class="space-y-4">
+      <!-- Dynamic Events -->
+    </ul>
+  </section>
+
+  <script>
+    let events = JSON.parse(localStorage.getItem("events")) || [];
+
+    function addEvent() {
+      const title = document.getElementById("eventTitle").value.trim();
+      const date = document.getElementById("eventDate").value;
+      const type = document.getElementById("eventType").value;
+
+      if (!title || !date || !type) {
+        alert("Please fill all fields");
+        return;
+      }
+
+      events.push({ title, date, type });
+      localStorage.setItem("events", JSON.stringify(events));
+      renderEvents();
+
+      document.getElementById("eventTitle").value = "";
+      document.getElementById("eventDate").value = "";
+      document.getElementById("eventType").value = "";
+    }
+
+    function deleteEvent(index) {
+      events.splice(index, 1);
+      localStorage.setItem("events", JSON.stringify(events));
+      renderEvents();
+    }
+
+    function getDaysLeft(date) {
+      const today = new Date();
+      const target = new Date(date);
+      const diff = Math.ceil((target - today) / (1000 * 60 * 60 * 24));
+      return diff >= 0 ? `${diff} day(s) left` : "⏰ Passed";
+    }
+
+    function getEventTypeClass(type) {
+      return `event-type-${type} px-3 py-1 rounded-full text-xs font-bold tracking-wide`;
+    }
+
+    function getEventTypeIcon(type) {
+      switch(type) {
+        case "Exam": return "📘";
+        case "Assignment": return "📝";
+        case "Test": return "🧪";
+        case "Hackathon": return "🚀";
+        default: return "";
+      }
+    }
+
+    function renderEvents() {
+      const list = document.getElementById("eventList");
+      const filterType = document.getElementById("filterType").value;
+      list.innerHTML = "";
+
+      const filtered = filterType ? events.filter(e => e.type === filterType) : events;
+
+      filtered
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
+        .forEach((event, index) => {
+          const li = document.createElement("li");
+          li.className = "bg-white p-6 rounded-2xl shadow flex flex-col md:flex-row md:justify-between md:items-center gap-2 hover:shadow-lg transition";
+
+          li.innerHTML = `
+            <div class="flex items-center gap-4">
+              <span class="text-3xl">${getEventTypeIcon(event.type)}</span>
+              <div>
+                <p class="text-lg font-bold text-gray-800">${event.title}</p>
+                <p class="text-sm text-gray-500">${event.date} • <span class="${getEventTypeClass(event.type)}">${event.type}</span> • ${getDaysLeft(event.date)}</p>
+              </div>
+            </div>
+            <button onclick="deleteEvent(${index})" class="text-red-600 hover:underline font-semibold mt-2 md:mt-0">Delete</button>
+          `;
+
+          list.appendChild(li);
+        });
+
+      if (filtered.length === 0) {
+        list.innerHTML = `<p class="text-gray-500 text-center py-8">No events found.</p>`;
+      }
+    }
+
+    renderEvents();
+  </script>
+
+</body>
+</html>

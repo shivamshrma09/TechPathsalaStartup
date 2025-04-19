@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About | TechPathshala</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f9fafb;
+    }
+    .bg-gradient {
+      background: linear-gradient(135deg, #3b82f6, #9333ea);
+    }
+  </style>
+</head>
+<body class="text-gray-800">
+
+  <!-- Navbar with logo -->
+  <div class="flex items-center justify-between px-6 py-4 shadow bg-white sticky top-0 z-50">
+    <div class="flex items-center space-x-3">
+      <img src="logo.png" alt="Logo" class="h-10">
+      <span class="text-xl font-bold text-blue-600">TechPathshala</span>
+    </div>
+    <a href="teachpath.home.html" class="text-blue-600 font-medium hover:underline">← Home</a>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="bg-gradient text-white py-20 px-6 text-center" data-aos="fade-up">
+    <h1 class="text-5xl font-bold mb-4">Empowering Engineers, the Smarter Way 🚀</h1>
+    <p class="text-xl max-w-2xl mx-auto">TechPathshala is more than a website. It’s a student-powered revolution to make technical learning easier, focused & fun – all for free!</p>
+  </section>
+
+  <!-- Core Values -->
+  <section class="max-w-6xl mx-auto px-6 py-16">
+    <div class="grid md:grid-cols-2 gap-10 items-center">
+      <div data-aos="fade-right">
+        <img src="https://i.imgur.com/b6JQGJm.png" alt="Team working" class="rounded-xl shadow-lg" />
+      </div>
+      <div data-aos="fade-left">
+        <h2 class="text-3xl font-bold text-blue-600 mb-4">What We Do</h2>
+        <ul class="space-y-3 text-lg">
+          <li>✅ Curated Notes, PYQs, Lab Manuals & Flashcards</li>
+          <li>✅ Study Tools: Compiler, Timer, Calculator, Unit Converter</li>
+          <li>✅ Smart Study Interface with Video + Notepad + Compiler</li>
+          <li>✅ AI Assistant, Pomodoro Mode & Study Planner</li>
+          <li>✅ CGPA Calculator, Classroom Finder & more</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section class="bg-white py-16" data-aos="fade-up">
+    <h2 class="text-center text-3xl font-bold text-blue-600 mb-12">Our Journey</h2>
+    <div class="max-w-4xl mx-auto space-y-8">
+      <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+        <div class="bg-blue-100 p-4 rounded-xl shadow w-full">
+          <h3 class="text-xl font-semibold text-blue-700">🧠 Idea</h3>
+          <p>Started as a dream by DTU students to help juniors and peers with real resources that actually matter.</p>
+        </div>
+        <div class="bg-purple-100 p-4 rounded-xl shadow w-full">
+          <h3 class="text-xl font-semibold text-purple-700">⚙️ Prototype</h3>
+          <p>Designed a smooth UI with tools like compilers, timers, notepad and curated video-based learning.</p>
+        </div>
+      </div>
+      <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+        <div class="bg-green-100 p-4 rounded-xl shadow w-full">
+          <h3 class="text-xl font-semibold text-green-700">📢 Launch</h3>
+          <p>TechPathshala goes live with semester-wise content, tools, and a strong community-first approach.</p>
+        </div>
+        <div class="bg-yellow-100 p-4 rounded-xl shadow w-full">
+          <h3 class="text-xl font-semibold text-yellow-700">🌍 Future</h3>
+          <p>Branch-specific tools, doubt forums, career prep, AI mentors and more – all free, all student-powered.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section class="bg-gray-100 py-16" data-aos="fade-up">
+    <h2 class="text-center text-3xl font-bold text-blue-600 mb-12">Meet the Team</h2>
+    <div class="flex flex-wrap justify-center gap-8 px-6">
+      <div class="bg-white p-6 rounded-xl shadow-md w-72 text-center">
+        <img src="https://i.imgur.com/0y8Ftya.png" class="w-24 h-24 mx-auto rounded-full mb-4" />
+        <h3 class="text-lg font-semibold text-gray-800">Shivam Kumar</h3>
+        <p class="text-blue-600 text-sm">Founder, DTU</p>
+        <p class="text-gray-600 mt-2 text-sm">Frontend, Planner & Visionary behind TechPathshala 🚀</p>
+      </div>
+      <!-- Add more team members below as needed -->
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="text-center py-10">
+    <h2 class="text-2xl font-semibold mb-3">Join us and study smarter, not harder ✨</h2>
+    <a href="teachpath.home.html" class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition">← Back to Home</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center text-sm text-gray-500 py-4 border-t">
+    © 2025 TechPathshala | Built with ❤️ by DTUians
+  </footer>
+
+  <!-- AOS Animation Library -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>AOS.init({ duration: 800, once: true });</script>
+</body>
+</html>

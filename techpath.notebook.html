@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notes & Books | TechPathshala</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-white shadow p-4 flex justify-between items-center">
+    <div class="flex items-center gap-3">
+      <a href="dashboard.html" class="text-blue-600 font-bold text-lg hover:underline flex items-center gap-1">
+        ← Dashboard
+      </a>
+      <span class="text-gray-400">|</span>
+      <span class="text-xl font-bold text-blue-600">Notes & Books</span>
+    </div>
+    <div>
+      <span id="username" class="text-gray-700 mr-4">Hi, Student</span>
+      <button onclick="logout()" class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Logout</button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-blue-500 to-indigo-500 text-white text-center py-10 shadow">
+    <h2 class="text-3xl font-bold mb-2">📘 Notes & Books</h2>
+    <p class="text-lg">Find semester-wise notes, textbooks, and recommended readings for every subject.</p>
+  </section>
+
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto px-4 py-10">
+
+    <!-- Notes List -->
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Sample Note Card -->
+      <div class="bg-white rounded-xl shadow p-5 flex flex-col">
+        <h3 class="text-lg font-semibold text-blue-700 mb-2">Mathematics - Semester 1</h3>
+        <p class="text-gray-600 mb-2">Handwritten notes + recommended textbook PDF</p>
+        <div class="flex gap-3 mt-auto">
+          <a href="#" class="bg-indigo-600 text-white px-4 py-1 rounded hover:bg-indigo-700 transition">Download Notes</a>
+          <a href="#" class="bg-blue-100 text-blue-700 px-4 py-1 rounded hover:bg-blue-200 transition">View Book</a>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow p-5 flex flex-col">
+        <h3 class="text-lg font-semibold text-blue-700 mb-2">Physics - Semester 1</h3>
+        <p class="text-gray-600 mb-2">Complete chapter-wise notes and solved examples</p>
+        <div class="flex gap-3 mt-auto">
+          <a href="#" class="bg-indigo-600 text-white px-4 py-1 rounded hover:bg-indigo-700 transition">Download Notes</a>
+          <a href="#" class="bg-blue-100 text-blue-700 px-4 py-1 rounded hover:bg-blue-200 transition">View Book</a>
+        </div>
+      </div>
+
+      <!-- Add more note cards as needed -->
+    </div>
+
+    <!-- Upload Section (if allowed) -->
+    <div class="mt-12 bg-white rounded-xl shadow p-6">
+      <h4 class="text-lg font-bold mb-2 text-indigo-700">Share Your Notes</h4>
+      <form class="flex flex-col md:flex-row gap-4">
+        <input type="text" placeholder="Title" class="p-2 border rounded w-full md:w-1/3" required>
+        <input type="file" class="p-2 border rounded w-full md:w-1/3" required>
+        <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition">Upload</button>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById("username").innerText = "Hi, " + (localStorage.getItem("name") || "Student");
+    function logout() {
+      localStorage.clear();
+      window.location.href = "teachpath.login.html";
+    }
+  </script>
+</body>
+</html>

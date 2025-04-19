@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Classroom Finder | TechPathshala</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-white shadow p-4 flex justify-between items-center">
+    <div class="text-xl font-bold text-blue-600">🗺️ Classroom Finder</div>
+    <a href="dashboard.html" class="text-blue-500 hover:underline">← Back to Dashboard</a>
+  </header>
+
+  <!-- Search Section -->
+  <section class="max-w-3xl mx-auto px-4 mt-8">
+    <div class="bg-white rounded-lg shadow p-6">
+      <h2 class="text-2xl font-semibold mb-4 text-gray-800">Find Your Classroom or Block</h2>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <input id="searchInput" type="text" placeholder="e.g. LT-202, Aryabhatt, Library" class="p-3 border rounded w-full"/>
+        <button onclick="getLocation()" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">Search</button>
+      </div>
+      <p class="text-sm text-gray-500 mt-2">Tip: You can enter block name, room number, hostel, or facility name.</p>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section class="max-w-3xl mx-auto px-4 mt-6" id="resultContainer"></section>
+
+  <!-- Map Image -->
+  <section class="max-w-4xl mx-auto mt-10 px-4">
+    <div class="bg-white rounded-lg shadow p-4">
+      <h3 class="text-lg font-semibold text-gray-700 mb-2">DTU Campus Map (Basic)</h3>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Delhi_Technological_University_Map.png" alt="DTU Map" class="rounded shadow"/>
+    </div>
+  </section>
+
+  <script>
+    const blockDetails = {
+      "LT": {
+        name: "Lecture Theatre (LT) Block",
+        description: "Main academic block with classrooms like LT-101 to LT-508. Spread across 3 floors.",
+        floors: "Ground, 1st, 2nd",
+        location: "Center of academic area, near Admin block.",
+        coords: { lat: 28.7498, lng: 77.1171 }
+      },
+      "ADMIN": {
+        name: "Admin Block",
+        description: "Administrative offices including Registrar, Dean and Admission sections.",
+        floors: "G + 1",
+        location: "Near LT block main entry.",
+        coords: { lat: 28.7494, lng: 77.1174 }
+      },
+      "DCE": {
+        name: "DCE Block",
+        description: "Older academic block, sometimes used for exams.",
+        floors: "G + 2",
+        location: "Near ECE & Mechanical Blocks.",
+        coords: { lat: 28.7502, lng: 77.1167 }
+      },
+      "ECE": {
+        name: "ECE Block",
+        description: "Department of Electronics & Communication Engineering. Labs + Classrooms.",
+        floors: "G + 2",
+        location: "Near DCE & Mechanical workshop.",
+        coords: { lat: 28.7504, lng: 77.1163 }
+      },
+      "MECH": {
+        name: "Mechanical Block",
+        description: "Mechanical Engineering Department with labs, workshops and classrooms.",
+        floors: "G + 2",
+        location: "Next to ECE Block.",
+        coords: { lat: 28.7503, lng: 77.1160 }
+      },
+      "CIVIL": {
+        name: "Civil Engineering Block",
+        description: "Houses Civil Engineering labs and classrooms.",
+        floors: "G + 2",
+        location: "Adjacent to Mechanical Block.",
+        coords: { lat: 28.7501, lng: 77.1156 }
+      },
+      "IT": {
+        name: "Information Technology Block",
+        description: "Department of IT and Computer Labs.",
+        floors: "G + 2",
+        location: "Behind Civil Block.",
+        coords: { lat: 28.7500, lng: 77.1153 }
+      },
+      "COE": {
+        name: "Center for Open Education / Computer Centre",
+        description: "Computer centre used for practical exams and IT resources.",
+        floors: "G + 1",
+        location: "Near IT Block.",
+        coords: { lat: 28.7498, lng: 77.1151 }
+      },
+      "LIBRARY": {
+        name: "Central Library",
+        description: "Main library building with digital and print resources. Reading halls included.",
+        floors: "G + 3",
+        location: "Behind LT block, next to Civil Department.",
+        coords: { lat: 28.7496, lng: 77.1165 }
+      },
+      "PRAGYA": {
+        name: "Pragya Bhawan",
+        description: "Used for seminars, workshops and university events. Large auditorium space.",
+        floors: "G + 1",
+        location: "Near Admin Block and LT.",
+        coords: { lat: 28.7499, lng: 77.1169 }
+      },
+      "CANTEEN": {
+        name: "Main Canteen",
+        description: "Most popular food spot on campus. Serves snacks, lunch, and drinks.",
+        floors: "Single Floor",
+        location: "Opposite Sports Complex.",
+        coords: { lat: 28.7506, lng: 77.1176 }
+      },
+      "MINI": {
+        name: "Mini Canteen",
+        description: "Small food spot near Aryabhatt Hostel. Budget-friendly for students.",
+        floors: "Single Floor",
+        location: "Near Aryabhatt Hostel.",
+        coords: { lat: 28.7508, lng: 77.1158 }
+      },
+      "SPORTS": {
+        name: "Sports Complex",
+        description: "Includes basketball, volleyball, tennis courts, football ground & gymnasium.",
+        floors: "Ground + Open Fields",
+        location: "Next to Main Canteen.",
+        coords: { lat: 28.7507, lng: 77.1179 }
+      },
+      "ARYABHATT": {
+        name: "Aryabhatt Hostel (Boys)",
+        description: "One of the oldest boys' hostels in DTU with a mini canteen nearby.",
+        floors: "G + 3",
+        location: "Near Mechanical Workshop.",
+        coords: { lat: 28.7509, lng: 77.1156 }
+      },
+      "RAMAN": {
+        name: "C.V. Raman Hostel (Boys)",
+        description: "Boys hostel with large residential capacity. Nearby sports complex.",
+        floors: "G + 3",
+        location: "Back side of campus.",
+        coords: { lat: 28.7510, lng: 77.1160 }
+      },
+      "EINSTEIN": {
+        name: "Einstein Hostel (Boys)",
+        description: "Another boys' hostel near Aryabhatt and Mini Canteen.",
+        floors: "G + 3",
+        location: "Next to Aryabhatt.",
+        coords: { lat: 28.7509, lng: 77.1154 }
+      },
+      "KALPANA": {
+        name: "Kalpana Chawla Hostel (Girls)",
+        description: "Primary girls' hostel with secure access and large lawn area.",
+        floors: "G + 4",
+        location: "Near University Guest House.",
+        coords: { lat: 28.7492, lng: 77.1183 }
+      },
+      "NEWGIRLS": {
+        name: "New Girls Hostel",
+        description: "Newly constructed girls' hostel with modern amenities.",
+        floors: "G + 4",
+        location: "Behind Kalpana Chawla Hostel.",
+        coords: { lat: 28.7490, lng: 77.1185 }
+      }
+    };
+
+    let userCoords = null;
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            userCoords = {
+              lat: pos.coords.latitude,
+              lng: pos.coords.longitude
+            };
+            searchLocation();
+          },
+          () => {
+            alert("Location permission denied. Searching without distance info.");
+            searchLocation();
+          }
+        );
+      } else {
+        alert("Geolocation is not supported by your browser.");
+        searchLocation();
+      }
+    }
+
+    function searchLocation() {
+      const input = document.getElementById("searchInput").value.trim().toUpperCase();
+      const container = document.getElementById("resultContainer");
+      container.innerHTML = "";
+
+      if (!input) {
+        alert("Please enter a room or block name.");
+        return;
+      }
+
+      const matchRoom = input.match(/(LT|DCE|ECE|ADMIN|MECH|CIVIL|IT|COE|LIBRARY|PRAGYA|CANTEEN|MINI|SPORTS|ARYABHATT|RAMAN|EINSTEIN|KALPANA|NEWGIRLS)[ -]?(\d{3})?/);
+      if (matchRoom) {
+        const block = matchRoom[1];
+        const room = matchRoom[2] ? `Room: ${block}-${matchRoom[2]}` : "";
+        const info = blockDetails[block];
+        if (info) {
+          let distanceInfo = "";
+          if (userCoords) {
+            const dist = getDistanceFromLatLon(userCoords.lat, userCoords.lng, info.coords.lat, info.coords.lng);
+            const time = Math.ceil((dist / 80) * 60); // assume 80 meters/minute walking
+            distanceInfo = `<p class="text-sm text-purple-600 mt-2">📍 You are ~${dist.toFixed(1)} meters away (~${time} min walk)</p>`;
+          }
+          container.innerHTML = `
+            <div class="bg-white shadow p-6 rounded-lg mt-4">
+              <h3 class="text-xl font-bold text-blue-700 mb-1">${info.name}</h3>
+              <p class="text-gray-700 mb-2">${info.description}</p>
+              <p class="text-sm text-gray-500">${info.floors} | Location: ${info.location}</p>
+              ${room ? `<div class="mt-2 text-green-600 font-semibold">${room} likely on ${getFloor(matchRoom[2])} Floor</div>` : ""}
+              ${distanceInfo}
+            </div>
+          `;
+          return;
+        }
+      }
+
+      container.innerHTML = `<div class="bg-red-100 text-red-700 p-4 mt-4 rounded">No matching block or room found.</div>`;
+    }
+
+    function getFloor(roomNumber) {
+      if (!roomNumber) return "Ground";
+      const digit = parseInt(roomNumber[0]);
+      return digit === 1 ? "Ground" : digit === 2 ? "1st" : digit === 3 ? "2nd" : "Upper";
+    }
+
+    function getDistanceFromLatLon(lat1, lon1, lat2, lon2) {
+      const R = 6371e3;
+      const φ1 = lat1 * Math.PI / 180;
+      const φ2 = lat2 * Math.PI / 180;
+      const Δφ = (lat2 - lat1) * Math.PI / 180;
+      const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+      const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+      return R * c;
+    }
+  </script>
+
+</body>
+</html>
