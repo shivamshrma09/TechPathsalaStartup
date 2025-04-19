@@ -174,13 +174,17 @@
   
 
   <!-- AOS Library -->
+<!-- Tera purana code unchanged hai, sirf yeh Firebase ka script neeche add kiya gaya hai -->
+
+<!-- ...sab upar ka code same rahega jaise tune diya tha... -->
+
+  <!-- AOS Library -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
     AOS.init({
       duration: 800,
       offset: 100,
     });
-    // Navbar shadow on scroll
     window.addEventListener('scroll', function() {
       const header = document.querySelector('header');
       if(window.scrollY > 10) {
@@ -190,5 +194,29 @@
       }
     });
   </script>
+
+  <!-- ✅ Firebase SDK integration -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAu5Fbzs-Eq8uNLrPvWa92oJ_D2OdQoA6k",
+      authDomain: "techpathsala-5bd9d.firebaseapp.com",
+      projectId: "techpathsala-5bd9d",
+      storageBucket: "techpathsala-5bd9d.firebasestorage.app",
+      messagingSenderId: "85465543188",
+      appId: "1:85465543188:web:841db864d4aacd97dd2d01",
+      measurementId: "G-0E3BPQVNCJ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    console.log("✅ Firebase initialized:", app);
+  </script>
+
+</body>
+</html>
+
 </body>
 </html>
