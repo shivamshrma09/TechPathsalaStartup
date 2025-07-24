@@ -15,7 +15,7 @@ A comprehensive web platform designed to help students manage their academic jou
 
 ## 🚀 Live Demo
 
-[Visit TechPathshala](https://your-firebase-url.web.app)
+[Visit TechPathshala](https://techpathsalastartup-2717.firebaseapp.com/)
 
 ## 🛠️ Tech Stack
 
