@@ -124,7 +124,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **TechPathshala Team**
 - Designed for students, by students
-- Contact: [your-email@example.com]
+- Contact: [shivamsharma27107@gmail.com]
 
 ## 🙏 Acknowledgments
 
